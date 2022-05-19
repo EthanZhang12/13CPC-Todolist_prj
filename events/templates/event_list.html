@@ -1,0 +1,66 @@
+<!-- added file -->
+
+<!doctype html>
+
+<!-- to use the "static" statement to generate the url of a static file -->
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- bootstrap css (common static file used by multiple apps in the
+        project) -->
+        <link rel="stylesheet"
+        href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <!-- app css: test css only used by one app
+        <link rel="stylesheet" href="{% static 'events/style.css' %}"
+        !important> -->
+        <!-- project css (common static file too) -->
+        <link rel="stylesheet" href="{% static 'style.css' %}" !important>
+        <!-- bootstrap js (common static file too) -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <title>Todo List</title>
+    </head>
+    <body>
+        <!-- bootstrap container -->
+        <div class="container">
+            <div class="row mb-4">
+                <h3>Todo List</h3>
+            </div>
+            <!-- using the default context object used by general list view
+            (<model>_list)
+            {\% if unexpired_event_list \%}-->
+            {% if event_list %}
+            <!-- bootstrap list -->
+            <ul class="list-group mb-3">
+                <!--{\% for e in unexpired_event_list \%}-->
+                {% for e in event_list %}
+                <!-- bootstrap list item -->
+                <!-- using "url" statement to generate the url (here
+                "/events/{\{ e.id \}}/") to prevent the hard coding -->
+                <li class="list-group-item"
+                onclick="location.href='{% url 'eventDetail' e.id %}'">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href=
+                            "{% url 'eventDetail' e.id %}">{{ e.title }}</a>
+                        </div>
+                        <div class="col-md-8">
+                            <span style="float:right">{{ e.time }}</span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Nothing to do.</p>
+            {% endif %}
+            <div class="row">
+                <a style="float:right" href="{% url 'eventNew' %}">Add</a>
+            </div>
+        </div>
+    </body>
+</html>

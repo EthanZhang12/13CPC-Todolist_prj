@@ -1,0 +1,117 @@
+<!-- added file -->
+
+<!doctype html>
+
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- bootstrap css -->
+        <link rel="stylesheet"
+        href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <!-- user css -->
+        <link rel="stylesheet" href="{% static 'style.css' %}" !important>
+        <!-- bootstrap js -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        {% if event %}
+        <title>{{ event.title }}</title>
+        {% else %}
+        <title>New Event</title>
+        {% endif %}
+    </head>
+    <body>
+        <div class="container">
+            <!-- forms; the action attribute specifies the url in the request
+            sent by submitting the form; the method attribute specifies the
+            method in the request, "get" means only getting from the server
+            without modifying the server data (no side effects on the server),
+            "post" means to modify the server data. -->
+            <!-- both modifying (including deleting) and creating use this form,
+            when creating, event variable is null, or else it's the event object
+            to be modified or delete -->
+            {% if event %}
+            <form id="form" name="form"
+            action="{% url 'modEvent' event.id %}" method="post">
+            {% else %}
+            <form id="form" name="form"
+            action="{% url 'addEvent' %}" method="post">
+            {% endif %}
+                <!-- prevent the cross-site request forgery-->
+                {% csrf_token %}
+                <fieldset class="border p-3 mb-3">
+                    <!-- the id attribute is used by css and js to style/select
+                    a specific element; "name" will be the data name that was
+                    submitted to the server, with the value of its content or
+                    the "value" attribute -->
+                    {% if event %}
+                    <legend><h3>{{ event.title }}</h3></legend>
+                    {% else %}
+                    <legend><h3>New Event</h3></legend>
+                    {% endif %}
+                    <label class="form-label" for="title">Title</label>
+                    {% if event %}
+                    <input type="text" id="title" name="title"
+                    class="form-control mb-3" value="{{ event.title }}">
+                    {% else %}
+                    <input type="text" id="title" name="title"
+                    class="form-control mb-3">
+                    {% endif %}
+                    <label class="form-label"
+                    for="description">Description</label>
+                    {% if event %}
+                    <textarea id="description" name="description"
+                    class="form-control mb-3"
+                    rows="3">{{ event.description }}</textarea>
+                    {% else %}
+                    <textarea id="description" name="description"
+                    class="form-control mb-3" rows="3"></textarea>
+                    {% endif %}
+                    <label class="form-label" for="time">Time</label>
+                    {% if event %}
+                    <input type="text" id="time" name="time"
+                    class="form-control"
+                    value="{{ event.time | date:'Y-m-d H:i:s' }}">
+                    {% else %}
+                    <input type="text" id="time" name="time"
+                    class="form-control">
+                    {% endif %}
+                </fieldset>
+                <!-- the user submits the form by clicking the submit button in
+                the browser, it will send a request to the url specified in the
+                action attribute, including the data entered in the form; a post
+                request line is like: post /events/5/modify/, and the form data
+                is as the request body, for example:
+                title=Test+event&description=x+y+z&time=2022-06-22+13%3A35%3A49&submit=Save
+                a get request line looks like (the form data is as the query
+                string in the url, note that modification is a typical post
+                request, this is for illustration only):
+                get /events/5/modify/?title=Test+event&description=x+y+z&time=2022-06-22+13%3A35%3A49&submit=Save -->
+                <!-- bootstrap grid -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <a href="{% url 'todoList' %}">Back to List</a>
+                    </div>
+                    {% if event %}
+                    <div class="col-md-2">
+                        <input type="submit" name="submit" class="btn-primary"
+                        style="float:right" value="Save" >
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" name="submit" class="btn-primary"
+                        style="float:right" value="Delete">
+                    </div>
+                    {% else %}
+                    <div class="col-md-4">
+                        <input type="submit" name="submit" class="btn-primary"
+                        style="float:right" value="Save">
+                    </div>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

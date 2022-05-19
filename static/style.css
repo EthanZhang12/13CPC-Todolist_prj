@@ -1,0 +1,21 @@
+/*
+ added file, project css as common static file used by multiple apps in the
+ project
+*/
+
+.container
+{
+    width: auto;
+    max-width: 600px;
+    margin: 4rem auto;
+}
+
+.list-group-item, fieldset
+{
+    background-color: var(--bs-light);
+}
+
+.list-group-item
+{
+    cursor: pointer;
+}

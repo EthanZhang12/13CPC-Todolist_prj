@@ -1,0 +1,12 @@
+/* added file, only for testing a app css only used by one app */
+
+body
+{
+    /* using the relative path relative to the dir where this file is located */
+    background: white url("images/img.png") no-repeat;
+}
+
+li a
+{
+    color: green;
+}
