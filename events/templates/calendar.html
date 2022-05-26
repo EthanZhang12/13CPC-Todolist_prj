@@ -1,0 +1,36 @@
+<!-- added file -->
+
+<!doctype html>
+
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- bootstrap css -->
+        <link rel="stylesheet"
+        href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <!-- user css -->
+        <link rel="stylesheet" href="{% static 'style.css' %}" !important>
+        <!-- bootstrap js -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <title>Calendar</title>
+    </head>
+    <body>
+        <div class="container">
+            <form id="form" name="form"
+            action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <fieldset class="border p-3 mb-3">
+                    <input type="text" id="date" name="date"
+                    class="form-control">
+                </fieldset>
+                <input type="submit" class="btn-primary" style="float:right"
+                value="Search">
+            </form>
+        </div>
+    </body>
+</html>

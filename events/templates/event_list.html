@@ -30,6 +30,7 @@
             <div class="row mb-4">
                 <h3>Todo List</h3>
             </div>
+            <p>{{ date }}</p>
             <!-- using the default context object used by general list view
             (<model>_list)
             {\% if unexpired_event_list \%}-->
@@ -59,7 +60,12 @@
             <p>Nothing to do.</p>
             {% endif %}
             <div class="row">
-                <a style="float:right" href="{% url 'eventNew' %}">Add</a>
+                <div class="col-md-6">
+                    <a href="{% url 'calendar' %}">Calendar</a>
+                </div>
+                <div class="col-md-6">
+                    <a style="float:right" href="{% url 'eventNew' %}">Add</a>
+                </div>
             </div>
         </div>
     </body>

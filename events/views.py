@@ -17,7 +17,7 @@ from .models import Event
 # Create your views here.
 # added
 #- handled by a function
-#def listEvent(request):
+#def listEvents(request):
 #    unexpired_event_list = Event.objects.filter(
 #        time__gte=timezone.now()).order_by('time')
 ##    # directly output the response
@@ -44,8 +44,29 @@ class EventListView(generic.ListView):
     # if defined, then model class is specified by this (even if model
     # specified)
     def get_queryset(self):
+        # showing the undue tasks if matching "todolist" pattern (/events/todo/)
+        if self.request.resolver_match.url_name == 'todoList':
+            return Event.objects.filter(
+                time__gte=timezone.now()).order_by('time')
+        # showing the events of selected date if matching "eventList" pattern
         return Event.objects.filter(
-            time__gte=timezone.now()).order_by('time')
+            time__year=self.request.resolver_match.kwargs['year'],
+            time__month=self.request.resolver_match.kwargs['month'],
+            time__day=self.request.resolver_match.kwargs['day']).order_by(
+                'time')
+
+    # add context
+    def get_context_data(self, **kwargs):
+        context = super(EventListView, self).get_context_data(**kwargs)
+
+        # to display the date for the query result of the specified date
+        if self.request.resolver_match.url_name == 'eventList':
+            context['date'] = '%s-%s-%s' % (
+                self.request.resolver_match.kwargs['year'],
+                self.request.resolver_match.kwargs['month'],
+                self.request.resolver_match.kwargs['day'])
+
+        return context
 
 #-
 #def eventDetail(request, event_id):
@@ -99,3 +120,13 @@ def addEvent(request):
         description=request.POST['description'], time=request.POST['time'])
     event.save()
     return HttpResponseRedirect(reverse('todoList'))
+
+#-
+def calendar(request):
+    return render(request, 'calendar.html')
+
+#-
+def search(request):
+    lst=request.POST['date'].split('-')
+    return HttpResponseRedirect(reverse('eventList',
+        args=(lst[0], lst[1], lst[2])))

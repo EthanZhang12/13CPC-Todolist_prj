@@ -17,7 +17,7 @@ from . import views
 # will be handled by the corresponding view (function)
 urlpatterns = [
 #    # - e.g.: /events/
-#    path('', views.listEvent, name='todoList'),
+#    path('', views.listEvents, name='todoList'),
 #    # - e.g.: /events/5/
 #    # - "int:" here is for matching an integer, naming it as "event_id"
 #    # - parameter of the pattern; the integer matched (5 in this example) is
@@ -30,8 +30,18 @@ urlpatterns = [
     path('<int:event_id>/modify/', views.modEvent, name='modEvent'),
     path('new/', views.eventNew, name='eventNew'),
     path('add/', views.addEvent, name='addEvent'),
+    path('calendar/', views.calendar, name='calendar'),
+    path('search/', views.search, name='search'),
     # handled by views derived from generic views (list view, detail view)
-    path('', views.EventListView.as_view(), name='todoList'),
+#    path('', views.EventListView.as_view(), name='todoList'),
+    #- all searchings are handled by the same list view
+    #-- undue events
+    path('todo/', views.EventListView.as_view(), name='todoList'),
+    #-- events with specified date (as searching result)
+    path('<int:year>/<int:month>/<int:day>/',
+        views.EventListView.as_view(), name='eventList'),
+    #-- redirecting "/events/" to "/events/todo/"
+    path('', generic.RedirectView.as_view(pattern_name='todoList')),
     #- the detail view captures the primary key (pk) of the context object
     #- from the url
     path('<int:pk>/', views.EventDetailView.as_view(), name='eventDetail'),
