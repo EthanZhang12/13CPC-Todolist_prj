@@ -95,23 +95,76 @@
                     <div class="col-md-8">
                         <a href="{% url 'todoList' %}">Back to List</a>
                     </div>
+                    <!-- saving (modifying or creating) needs to validate the
+                    form data, deleting won't need to validate but it needs
+                    confirmation -->
                     {% if event %}
                     <div class="col-md-2">
                         <input type="submit" name="submit" class="btn-primary"
-                        style="float:right" value="Save">
+                        style="float:right" onclick="return validateForm()"
+                        value="Save">
                     </div>
                     <div class="col-md-2">
                         <input type="submit" name="submit" class="btn-primary"
-                        style="float:right" value="Delete">
+                        style="float:right" onclick="return confirmDel()"
+                        value="Delete">
                     </div>
                     {% else %}
                     <div class="col-md-4">
                         <input type="submit" name="submit" class="btn-primary"
-                        style="float:right" value="Save">
+                        style="float:right" onclick="return validateForm()"
+                        value="Save">
                     </div>
                     {% endif %}
                 </div>
             </form>
         </div>
+        <script>
+            function dateOfStr(str)
+            {
+                var strs = str.split(" ");
+                var strsDate = strs[0].split("-");
+                var strsTime = strs[1].split(":");
+
+                return new Date(
+                    parseInt(strsDate[0], 10),
+                    parseInt(strsDate[1], 10) - 1,
+                    parseInt(strsDate[2], 10),
+                    parseInt(strsTime[0], 10),
+                    parseInt(strsTime[1], 10),
+                    parseInt(strsTime[2], 10));
+            }
+
+            function confirmDel()
+            {
+                if (confirm("Are you sure you want to delete this event?"))
+                    return true;
+                return false;
+            }
+
+            function validateForm()
+            {
+                var x = document.forms["form"]["title"].value;
+                if (x == null || x == "") {
+                    alert("Please input a title.");
+                    document.getElementById("title").focus();
+                    return false;
+                }
+
+                var x = document.forms["form"]["time"].value;
+                if (x == null || x == "") {
+                    alert("Please input a time.");
+                    document.getElementById("time").focus();
+                    return false;
+                }
+                if (dateOfStr(x) < new Date()) {
+                    alert("The time should be in the future.");
+                    document.getElementById("time").focus();
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
     </body>
 </html>

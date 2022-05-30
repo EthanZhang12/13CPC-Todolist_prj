@@ -21,7 +21,7 @@
     </head>
     <body>
         <div class="container">
-            <form id="form" name="form"
+            <form id="form" name="form" onsubmit="return validateForm()"
             action="{% url 'search' %}" method="post">
                 {% csrf_token %}
                 <fieldset class="border p-3 mb-3">
@@ -32,5 +32,18 @@
                 value="Search">
             </form>
         </div>
+        <script>
+            function validateForm()
+            {
+                var x = document.forms["form"]["date"].value;
+                if (x == null || x == "") {
+                    alert("Please input a date.");
+                    document.getElementById("date").focus();
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
     </body>
 </html>
