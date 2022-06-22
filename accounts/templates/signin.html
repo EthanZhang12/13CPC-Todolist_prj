@@ -1,0 +1,100 @@
+<!-- added file -->
+
+<!doctype html>
+
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+        href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'style.css' %}" !important>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+        <title>Sign in</title>
+    </head>
+    <body>
+        <div class="container">
+            {% if err_samename %}
+            <p><strong>A user with that username already exists!</strong></p>
+            {% endif %}
+            <form id="form" name="form" onsubmit="return validateForm()"
+            action="{% url 'signin' %}" method="post">
+                {% csrf_token %}
+                <fieldset class="border p-3 mb-3">
+                    <legend><h3>Sign in</h3></legend>
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" name="username"
+                    class="form-control mb-3" value="{{ username }}">
+                    <label class="form-label" for="firstname">First name</label>
+                    <input type="text" id="firstname" name="firstname"
+                    class="form-control" placeholder="optional"
+                    value="{{ firstname }}">
+                    <label class="form-label" for="lastname">Last name</label>
+                    <input type="text" id="lastname" name="lastname"
+                    class="form-control mb-3" placeholder="optional"
+                    value="{{ lastname }}">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" name="email"
+                    class="form-control mb-3" value="{{ email }}">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                    class="form-control" value="{{ password }}">
+                    <label class="form-label"
+                    for="passwdcfm">Password confirmation</label>
+                    <input type="password" id="passwdcfm" name="passwdcfm"
+                    class="form-control" value="{{ passwdcfm }}">
+                </fieldset>
+                <input type="submit" class="btn-primary" style="float:right"
+                value="Sign in">
+            </form>
+        </div>
+        <script>
+            function validateForm()
+            {
+                var x = document.forms["form"]["username"].value;
+                if (x == null || x == "") {
+                    alert("Please input a username.");
+                    document.getElementById("username").focus();
+                    return false;
+                }
+                if (!/^[a-zA-Z_][a-zA-Z_0-9]{5,17}$/.test(x)) {
+                    alert("A username must be between 6 and 18 in length and\
+                        contains only letters and numbers but can't start with\
+                        a number.");
+                    document.getElementById("username").focus();
+                    return false;
+                }
+
+                var x = document.forms["form"]["email"].value;
+                if (x == null || x == "") {
+                    alert("Please input a email.");
+                    document.getElementById("email").focus();
+                    return false;
+                }
+
+                var x = document.forms["form"]["password"].value;
+                if (x == null || x == "") {
+                    alert("Please input a password.");
+                    document.getElementById("password").focus();
+                    return false;
+                }
+                var y = document.forms["form"]["passwdcfm"].value;
+                if (y == null || y == "") {
+                    alert("Please confirm the password.");
+                    document.getElementById("passwdcfm").focus();
+                    return false;
+                }
+                if (y != x) {
+                    alert("The two passwords do not match.");
+                    document.getElementById("passwdcfm").focus();
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
+    </body>
+</html>

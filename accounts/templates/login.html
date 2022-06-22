@@ -1,0 +1,79 @@
+<!-- added file -->
+
+<!doctype html>
+
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+        href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'style.css' %}" !important>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="container">
+            {% if err %}
+            <!-- login failed -->
+            <p><strong>Invalid username or password!</strong></p>
+            {% else %}
+            {% if next %}
+            <!-- the get request redirected to from a login required view
+            (function) includes the "next" query string -->
+            {% if user.is_authenticated %}
+            <p>You have no access to this page. Please login with an account has
+            access.</p>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+
+            <form id="form" name="form" onsubmit="return validateForm()"
+            action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <fieldset class="border p-3 mb-3">
+                    <legend><h3>Login</h3></legend>
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" name="username"
+                    class="form-control mb-3" value="{{ username }}">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                    class="form-control" value="{{ password }}">
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{% url 'signin' %}">Create a user</a>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" class="btn-primary"
+                        style="float:right" value="Login">
+                    </div>
+                </div>
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+        </div>
+        <script>
+            function validateForm()
+            {
+                var x = document.forms["form"]["username"].value;
+                if (x == null || x == "") {
+                    alert("Please input a username.");
+                    document.getElementById("username").focus();
+                    return false;
+                }
+
+                var x = document.forms["form"]["password"].value;
+                if (x == null || x == "") {
+                    alert("Please input a password.");
+                    document.getElementById("password").focus();
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
+    </body>
+</html>

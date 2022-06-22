@@ -22,13 +22,18 @@
         <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}">
         </script>
 
-        <title>Todo List</title>
+        <title>Todo List of {{ username }}</title>
     </head>
     <body>
         <!-- bootstrap container -->
         <div class="container">
             <div class="row mb-4">
-                <h3>Todo List</h3>
+                <div class="col-md-10">
+                    <h3>Todo List of {{ username }}</h3>
+                </div>
+                <div class="col-md-2 align-self-center">
+                    <a style="float:right" href="{% url 'logout' %}">Logout</a>
+                </div>
             </div>
             <p>{{ date }}</p>
             <!-- using the default context object used by general list view

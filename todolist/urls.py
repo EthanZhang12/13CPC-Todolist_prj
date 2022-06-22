@@ -33,6 +33,7 @@ urlpatterns = [
     # part will be processed by the specified urlconf (such as (urlpatterns in)
     # events/urls.py)
     path('events/', include('events.urls')),
+    path('accounts/', include('accounts.urls')),
     # - redirecting "/" to "events/todo/", which is referenced by its
     # - pattern_name "todoList" defined in events/urls.py
     path('', generic.RedirectView.as_view(pattern_name='todoList')),

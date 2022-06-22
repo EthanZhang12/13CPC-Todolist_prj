@@ -33,9 +33,10 @@ ALLOWED_HOSTS = []
 
 # apps (installed) in this project
 INSTALLED_APPS = [
-    # - added
+    # -- added
     # - EventsConfig class in events/apps.py
     'events.apps.EventsConfig',
+    'accounts.apps.AccountsConfig',
     # - admin app for the administrator to maintain data
     'django.contrib.admin',
     # - user authorization app

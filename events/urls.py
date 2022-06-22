@@ -18,15 +18,15 @@ from . import views
 urlpatterns = [
 #    # - e.g.: /events/
 #    path('', views.listEvents, name='todoList'),
-#    # - e.g.: /events/5/
-#    # - "int:" here is for matching an integer, naming it as "event_id"
-#    # - parameter of the pattern; the integer matched (5 in this example) is
-#    # - then the value of the event_id parameter passed to the handling
-#    # - function (here is views.eventDetail); or the parameter of a pattern can
-#    # - be specified in reverse function to generate the url of this pattern,
-#    # - for example, "reverse('eventDetail', args=(5))"
-#    # - ("url 'eventDetail' '5'" in a template) generating "/events/5/"
-#    path('<int:event_id>/', views.eventDetail, name='eventDetail'),
+    # - e.g.: /events/5/
+    # - "int:" here is for matching an integer, naming it as "event_id"
+    # - parameter of the pattern; the integer matched (5 in this example) is
+    # - then the value of the event_id parameter passed to the handling function
+    # - (here is views.eventDetail); or the parameter of a pattern can be
+    # - specified in reverse function to generate the url of this pattern, for
+    # - example, "reverse('eventDetail', args=(5))" ("url 'eventDetail' '5'" in
+    # - a template) generating "/events/5/"
+    path('<int:event_id>/', views.eventDetail, name='eventDetail'),
     path('<int:event_id>/modify/', views.modEvent, name='modEvent'),
     path('new/', views.eventNew, name='eventNew'),
     path('add/', views.addEvent, name='addEvent'),
@@ -42,7 +42,7 @@ urlpatterns = [
         views.EventListView.as_view(), name='eventList'),
     #-- redirecting "/events/" to "/events/todo/"
     path('', generic.RedirectView.as_view(pattern_name='todoList')),
-    #- the detail view captures the primary key (pk) of the context object
-    #- from the url
-    path('<int:pk>/', views.EventDetailView.as_view(), name='eventDetail'),
+#    #- the detail view captures the primary key (pk) of the context object
+#    #- from the url
+#    path('<int:pk>/', views.EventDetailView.as_view(), name='eventDetail'),
 ]
