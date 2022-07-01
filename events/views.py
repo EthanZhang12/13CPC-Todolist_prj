@@ -202,3 +202,23 @@ def search(request):
     lst=request.POST['date'].split('-')
     return HttpResponseRedirect(reverse('eventList',
         args=(lst[0], lst[1], lst[2])))
+
+#- email reminder, as a scheduled task
+def remind():
+    # reminding 10 mins before the due time
+    todolist = Event.objects.filter(
+        time__gte=timezone.now(),
+        time__lte=timezone.now()+datetime.timedelta(minutes=10))
+
+    subject = 'Event Reminder'
+    email_from = settings.EMAIL_HOST_USER
+    for event in todolist:
+        # - NZST conversion, since it is the UTC time in the database
+        message = '%s --- %s\n%s' % (
+            event.title,
+            event.time.astimezone(
+                datetime.timezone(datetime.timedelta(hours=12))),
+            event.description)
+        recipient_list = [ event.user.email, ]
+        send_mail(subject, message, email_from, recipient_list)
+        event.save()

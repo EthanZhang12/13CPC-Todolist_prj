@@ -33,10 +33,16 @@ ALLOWED_HOSTS = []
 
 # apps (installed) in this project
 INSTALLED_APPS = [
-    # -- added
+    # --- added
     # - EventsConfig class in events/apps.py
     'events.apps.EventsConfig',
     'accounts.apps.AccountsConfig',
+    # - scheduled task app for django
+    # - installing this app by "pip install django-crontab" will install it to
+    # - ~/Library/Python/3.9/lib/python3.9/site-packages/, which isn't a valid
+    # - directory of python; therefore it needs to be moved to
+    # - ~/Library/Python/3.9/lib/python/site-packages/
+    'django_crontab',
     # - admin app for the administrator to maintain data
     'django.contrib.admin',
     # - user authorization app
@@ -164,3 +170,21 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# added: scheduled task, executing every minute, using the command
+# "python manage.py crontab add" to make it work, using the command
+# "python manage.py crontab remove" to remove it, and "show" command word can
+# also be used
+CRONJOBS = (
+    ('*/1 * * * *', 'events.views.remind'),
+)
+
+# added: email remind settings; since gmail stopped supporting unauthorized
+# third party app to log in its smtp server to send email, qqmail is used
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ethanhezh@foxmail.com'
+#- smtp authorization code, generated in web mail
+EMAIL_HOST_PASSWORD = 'gdaorkkctgbvdeeb'
