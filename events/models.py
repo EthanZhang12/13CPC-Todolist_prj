@@ -23,6 +23,7 @@ class Event(models.Model):
     # specifying a verbose_name ("time to remind") to show in admin app (instead
     # of "time") (optionally)
     time = models.DateTimeField('time to remind')
+    reminded = models.BooleanField(default=False)
     # the string representation of the object.
     def __str__(self):
         return self.title

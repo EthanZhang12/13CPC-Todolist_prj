@@ -207,8 +207,7 @@ def search(request):
 def remind():
     # reminding 10 mins before the due time
     todolist = Event.objects.filter(
-        time__gte=timezone.now(),
-        time__lte=timezone.now()+datetime.timedelta(minutes=10))
+        time__lte=timezone.now()+datetime.timedelta(minutes=10), reminded=False)
 
     subject = 'Event Reminder'
     email_from = settings.EMAIL_HOST_USER
@@ -221,4 +220,5 @@ def remind():
             event.description)
         recipient_list = [ event.user.email, ]
         send_mail(subject, message, email_from, recipient_list)
+        event.reminded = True
         event.save()
