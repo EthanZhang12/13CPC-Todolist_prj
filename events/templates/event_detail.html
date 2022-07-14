@@ -119,6 +119,7 @@
                 </div>
             </form>
         </div>
+        <script src="{% static 'laydate/laydate.js' %}"></script>
         <script>
             function dateOfStr(str)
             {
@@ -165,6 +166,11 @@
 
                 return true;
             }
+
+            laydate.render({
+                elem: '#time',
+                lang: 'en',
+                type: 'datetime'});
         </script>
     </body>
 </html>
